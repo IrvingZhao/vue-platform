@@ -7,7 +7,7 @@ const Page404 = () => import(/* webpackChunkName: "error/404" */ '../page/public
 const MainPage = () => import(/* webpackChunkName: "base" */ "../page/main/pages/Main");
 // import Page404 from '../page/public/404';
 // import MainPage from '../page/main/pages/Main';
-
+const enableAuth = Vue.enableAuth;
 
 let baseRouteConfig = [
     {
@@ -47,12 +47,34 @@ const getRouter = (routes) => {
             routes: routerConfig
         });
         router.beforeEach((to, from, next) => {
-            //TODO 401  子页跳转
-            if (!to.matched || to.matched.length === 0) {
-                router.push({name: "main404"});
+            console.info("======================== router - info ================");
+            console.info(to);
+            console.info(from);
+            if (enableAuth) {
+                let pageKey = to.meta.key;
+                let page = Vue.$menu.getPageByKey(pageKey);
+                let lastMatched = to.matched[to.matched.length - 1];
+                if (lastMatched) {
+                    if (page) {
+                        if (page.path === lastMatched.path) {
+                            next();//页面找到，并地址匹配，执行跳转
+                        } else {
+                            //TODO 地址不匹配，跳转401
+                        }
+                    } else {
+                        //TODO 跳转401
+                    }
+                } else {
+                    next();
+                }
             } else {
                 next();
             }
+            // if (!to.matched || to.matched.length === 0) {
+            //     router.push({name: "main404"});
+            // } else {
+            //     next();
+            // }
         });
     }
     return router;
