@@ -12,7 +12,8 @@ const store = {
     namespaced: true,
     state: {
         menuTreeList: null,
-        pageMap: {}
+        pageMap: {},
+        pageKeyMap: {}
     },
     mutations: {
         updateMenu(state, menus) {
@@ -25,6 +26,7 @@ const store = {
             authObjects.forEach((item) => {
                 if (item.type === "page") {
                     pageMap[item.id] = item;
+                    state.pageKeyMap[item.key] = item;
                 } else if (item.type === "operator") {
                     operatorMap[item.id] = item;
                 }
@@ -81,6 +83,9 @@ const operator = (store) => {
         },
         getPageById(pageId) {
             return store.state.menu.pageMap[pageId];
+        },
+        getPageByKey(pageKey) {
+            return store.state.menu.pageKeyMap[pageKey];
         }
     }
 };
