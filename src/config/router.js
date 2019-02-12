@@ -4,6 +4,7 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 const Page404 = () => import(/* webpackChunkName: "error/404" */ '../page/public/404');
+const Page401 = () => import(/* webpackChunkName: "error/404" */ '../page/public/401');
 const MainPage = () => import(/* webpackChunkName: "base" */ "../page/main/pages/Main");
 // import Page404 from '../page/public/404';
 // import MainPage from '../page/main/pages/Main';
@@ -15,6 +16,14 @@ let baseRouteConfig = [
         path: "/404",
         component: Page404
     },
+    {
+        name: "401",
+        path: "no-auth",
+        component: Page401,
+        meta: {
+            auth: false
+        }
+    }
 ];
 
 let rootRouteConfig = {
@@ -50,7 +59,7 @@ const getRouter = (routes) => {
             console.info("======================== router - info ================");
             console.info(to);
             console.info(from);
-            if (enableAuth) {
+            if (enableAuth && to.meta.auth === false) {
                 let pageKey = to.meta.key;
                 let page = Vue.$menu.getPageByKey(pageKey);
                 let lastMatched = to.matched[to.matched.length - 1];
@@ -59,10 +68,10 @@ const getRouter = (routes) => {
                         if (page.path === lastMatched.path) {
                             next();//页面找到，并地址匹配，执行跳转
                         } else {
-                            //TODO 地址不匹配，跳转401
+                            router.push({name: "401"});
                         }
                     } else {
-                        //TODO 跳转401
+                        router.push({name: "401"});
                     }
                 } else {
                     next();
