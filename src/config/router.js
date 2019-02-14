@@ -1,5 +1,6 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
+import StoreConfig from 'store';
 
 Vue.use(VueRouter);
 
@@ -8,6 +9,7 @@ const Page401 = () => import(/* webpackChunkName: "error/401" */ '../page/public
 const MainPage = () => import(/* webpackChunkName: "base" */ "../page/main/pages/Main");
 // import Page404 from '../page/public/404';
 // import MainPage from '../page/main/pages/Main';
+const store = StoreConfig.getStore();
 
 let baseRouteConfig = [
     {
@@ -30,7 +32,7 @@ let rootRouteConfig = {
 let router;
 
 const getRouter = (routes) => {
-    const enableAuth = Vue.$platform.config.enableAuth;
+    const enableAuth = store.state.config.enableAuth;
     if (!router) {
         let routerConfig = [...baseRouteConfig];
 

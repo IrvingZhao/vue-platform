@@ -8,10 +8,15 @@ import App from './App';
 import './assets/style/index.scss';
 import './assets/style/iconfont.scss';
 
+let platformOption;
+
 export default {
     getVueConfig(routes) {
         const router = RouterConfig.getRouter(routes);
         const store = StoreConfig.getStore();
+        if (platformOption) {
+            store.commit("config/setEnableAuth", platformOption.enableAuth);
+        }
         return {
             router,
             store,
@@ -20,11 +25,6 @@ export default {
     },
     install(Vue, options) {
         Vue.use(StoreConfig);
-        Vue.$platform = {
-            config: {
-                enableAuth: options.enableAuth
-            }
-        }
-        // Vue.use(XlbPlugin);
+        platformOption = options;
     }
 }
