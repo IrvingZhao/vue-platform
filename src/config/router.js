@@ -4,22 +4,16 @@ import VueRouter from 'vue-router';
 Vue.use(VueRouter);
 
 const Page404 = () => import(/* webpackChunkName: "error/404" */ '../page/public/404');
-const Page401 = () => import(/* webpackChunkName: "error/404" */ '../page/public/401');
+const Page401 = () => import(/* webpackChunkName: "error/401" */ '../page/public/401');
 const MainPage = () => import(/* webpackChunkName: "base" */ "../page/main/pages/Main");
 // import Page404 from '../page/public/404';
 // import MainPage from '../page/main/pages/Main';
-const enableAuth = Vue.enableAuth;
 
 let baseRouteConfig = [
     {
-        name: "404",
+        name: "Page404",
         path: "/404",
-        component: Page404
-    },
-    {
-        name: "401",
-        path: "no-auth",
-        component: Page401,
+        component: Page404,
         meta: {
             auth: false
         }
@@ -36,6 +30,7 @@ let rootRouteConfig = {
 let router;
 
 const getRouter = (routes) => {
+    const enableAuth = Vue.$platform.config.enableAuth;
     if (!router) {
         let routerConfig = [...baseRouteConfig];
 
@@ -46,7 +41,17 @@ const getRouter = (routes) => {
         rootRouteConfig.children.push({
             name: "main404",
             path: "*",
-            component: Page404
+            component: Page404,
+            meta: {
+                auth: false
+            }
+        }, {
+            name: "Page401",
+            path: "no-auth",
+            component: Page401,
+            meta: {
+                auth: false
+            }
         });
 
         routerConfig.push(rootRouteConfig);
@@ -59,19 +64,19 @@ const getRouter = (routes) => {
             console.info("======================== router - info ================");
             console.info(to);
             console.info(from);
-            if (enableAuth && to.meta.auth === false) {
+            if (enableAuth && to.meta.auth !== false) {
                 let pageKey = to.meta.key;
                 let page = Vue.$menu.getPageByKey(pageKey);
                 let lastMatched = to.matched[to.matched.length - 1];
                 if (lastMatched) {
                     if (page) {
-                        if (page.path === lastMatched.path) {
+                        if (lastMatched.regex.test(page.path)) {
                             next();//页面找到，并地址匹配，执行跳转
                         } else {
-                            router.push({name: "401"});
+                            router.push({name: "Page401"});
                         }
                     } else {
-                        router.push({name: "401"});
+                        router.push({name: "Page401"});
                     }
                 } else {
                     next();

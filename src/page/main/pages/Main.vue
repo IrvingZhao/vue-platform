@@ -84,15 +84,9 @@
                 this.isCollapse = !this.isCollapse;
             },
             menuSelect(menuIndex, menuIndexTree, component) {
-                console.info(component);
-                let pageId = component.route;
-                if (pageId) {
-                    let page = this.$menu.getPageById(pageId);
-                    this.$router.push(page.path);
+                if (component.route) {
+                    this.$router.push(component.route);
                 }
-                // if (component.route) {
-                //     this.$router.push(component.route);
-                // }
             },
             menuOpen() {
                 if (this.scrollBarParam.instance) {

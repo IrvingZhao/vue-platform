@@ -18,8 +18,13 @@ export default {
             render: h => h(App),
         }
     },
-    install(Vue) {
+    install(Vue, options) {
         Vue.use(StoreConfig);
+        Vue.$platform = {
+            config: {
+                enableAuth: options.enableAuth
+            }
+        }
         // Vue.use(XlbPlugin);
     }
 }
