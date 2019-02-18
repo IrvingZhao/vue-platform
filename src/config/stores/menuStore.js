@@ -66,14 +66,14 @@ const store = {
                     context.commit("updateUserAuth", data);
                 }
             });
+        },
+        initUserAuth(context) {
+            context.commit("loadMenu");
+            context.commit("loadAuth");
         }
     }
 };
 const operator = (store) => {
-    //初始化加载
-    store.dispatch("base_menu/loadMenu");
-    store.dispatch("base_menu/loadAuth");
-
     return {
         reloadMenu() {
             store.dispatch("base_menu/loadMenu");

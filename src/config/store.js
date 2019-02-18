@@ -5,9 +5,10 @@ import DicStore from './stores/dicStore';
 import BreadStore from './stores/breadStore';
 import MenuStore from './stores/menuStore';
 import ConfigStore from './stores/configStore';
+import UserStore from './stores/userStore';
 
 const StoreArray = [
-    BreadStore, ConfigStore, DicStore, MenuStore
+    BreadStore, ConfigStore, DicStore, MenuStore, UserStore
 ];
 
 Vue.use(Vuex);
@@ -35,5 +36,6 @@ export default {
         Vue.prototype.$config = ConfigStore.operator(getStore());
         Vue.prototype.$dic = DicStore.operator(getStore());
         Vue.prototype.$menu = MenuStore.operator(getStore());
+        Vue.prototype.$user = UserStore.operator(getStore());
     }
 };

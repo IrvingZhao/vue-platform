@@ -39,7 +39,17 @@ let rootRouteConfig = {
 let router;
 
 const getRouter = (routes) => {
+    //初始化路由时，检查用户状态
     const config = store.state.base_config;
+
+    let token = Vue.$util.getItem("user_token");
+    let userInfo = Vue.$util.getItem("user_info");
+    if (token && userInfo) { //如果缓存中存在用户信息及token，刷新store中的数据
+        store.commit("base_user/updateToken", token);
+        store.commit("base_user/updateUserInfo", userInfo);
+        store.commit("base_menu/initUserAuth");//加载用户权限信息
+    }
+    const stateUserInfo = store.state.base_user;
     if (!router) {
         let routerConfig = [...baseRouteConfig];
 
@@ -56,7 +66,7 @@ const getRouter = (routes) => {
             }
         }, {
             name: "Page401",
-            path: "no-auth",
+            path: "/no-auth",
             component: Page401,
             meta: {
                 auth: false
@@ -73,21 +83,33 @@ const getRouter = (routes) => {
             console.info("======================== router - info ================");
             console.info(to);
             console.info(from);
-            if (config.enableAuth && to.meta.auth !== false) {
-                let pageKey = to.meta.key;
-                let page = Vue.$menu.getPageByKey(pageKey);
-                let lastMatched = to.matched[to.matched.length - 1];
-                if (lastMatched) {
-                    if (page) {
-                        if (lastMatched.regex.test(page.path)) {
-                            next();//页面找到，并地址匹配，执行跳转
+            if (config.enableAuth) {
+                if (!stateUserInfo.token) {//跳转页面非 login  并且 store中不包含  token  跳转登录页
+                    if (to.name === "Login") {
+                        next();
+                    } else {
+                        next("/login")
+                    }
+                    return;
+                }
+                if (to.meta.auth !== false) {
+                    let pageKey = to.meta.key;
+                    let page = Vue.$menu.getPageByKey(pageKey);
+                    let lastMatched = to.matched[to.matched.length - 1];
+                    if (lastMatched) {
+                        if (page) {
+                            if (lastMatched.regex.test(page.path)) {
+                                next();//页面找到，并地址匹配，执行跳转
+                            } else {
+                                //页面地址不匹配，跳转401
+                                next("/no-auth");
+                            }
                         } else {
-                            //页面地址不匹配，跳转401
-                            router.push({name: "Page401"});
+                            //页面对象未找到，跳转401
+                            next("/no-auth");
                         }
                     } else {
-                        //页面对象未找到，跳转401
-                        router.push({name: "Page401"});
+                        next();
                     }
                 } else {
                     next();
@@ -95,6 +117,7 @@ const getRouter = (routes) => {
             } else {
                 next();
             }
+
         });
     }
     return router;
