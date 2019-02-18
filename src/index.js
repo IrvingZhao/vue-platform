@@ -19,7 +19,7 @@ export default {
         const router = RouterConfig.getRouter(routes);
         const store = StoreConfig.getStore();
         if (platformOption) {
-            store.commit("config/setEnableAuth", platformOption.enableAuth);
+            store.commit("base_config/setEnableAuth", platformOption.enableAuth);
         }
         return {
             router,
