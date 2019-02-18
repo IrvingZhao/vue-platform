@@ -8,43 +8,55 @@ let store = {
     namespaced: true,
     state: {},
     actions: {
-        loadDicItem(context, dicType) {
-            getDicByType(dicType).then(({body}) => {
-                const {code, msg, data} = body;
+        loadDicItem(context, typeKey) {
+            getDicByType(typeKey).then(({body}) => {
+                const {code, data} = body;
                 if ("000000" === code) {
-                    context.commit("updateDic", {dicType, data});
+                    context.commit("updateDic", {typeKey, data});
                 }
             })
         }
     },
     mutations: {
-        updateDic(state, {dicType, data}) {
+        updateDic(state, {typeKey, data}) {
             let dicMap = {};
             data.forEach((item) => {
                 dicMap[item.key] = item.value;
             });
-            Vue.set(state, dicType, true);
-            Vue.set(state, dicType + "_map", dicMap);
-            Vue.set(state, dicType + "_list", data);
+            Vue.set(state, typeKey, true);
+            Vue.set(state, typeKey + "_map", dicMap);
+            Vue.set(state, typeKey + "_list", data);
         }
     }
 };
 let operator = (store) => {
     return {
-        reloadDicItem(dicType) {
-            store.dispatch("dic/loadDicItem", dicType);
+        /**
+         * 重新加载指定key的字典项
+         * @param typeKey 字典类别key
+         * */
+        reloadDicItem(typeKey) {
+            store.dispatch("dic/loadDicItem", typeKey);
         },
-        getDicItemMap(dicType) {
-            if (!store.state.dic[dicType]) {
-                store.dispatch("dic/loadDicItem", dicType);
+        /**
+         * 获取指定key的字典项对象
+         * @param typeKey 字典类别key
+         * */
+        getDicItemMap(typeKey) {
+            if (!store.state.dic[typeKey]) {
+                store.dispatch("dic/loadDicItem", typeKey);
             }
-            return store.state.dic[dicType + "_map"];
+            return store.state.dic[typeKey + "_map"];
         },
-        getDicItemArray(dicType) {
-            if (!store.state.dic[dicType]) {
-                store.dispatch("dic/loadDicItem", dicType);
+        /**
+         * 获取指定key的字典项数组
+         * @param typeKey 字典类别key
+         * */
+        getDicItemArray(typeKey) {
+            if (!store.state.dic[typeKey]) {
+                store.dispatch("dic/loadDicItem", typeKey);
             }
-            return store.state.dic[dicType + "_list"];
+            return store.state.dic[typeKey + "_list"];
         }
     }
 };

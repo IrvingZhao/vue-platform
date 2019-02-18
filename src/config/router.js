@@ -1,14 +1,12 @@
 import Vue from 'vue';
 import VueRouter from 'vue-router';
-import StoreConfig from 'store';
+import StoreConfig from './store';
 
 Vue.use(VueRouter);
 
 const Page404 = () => import(/* webpackChunkName: "error/404" */ '../page/public/404');
 const Page401 = () => import(/* webpackChunkName: "error/401" */ '../page/public/401');
 const MainPage = () => import(/* webpackChunkName: "base" */ "../page/main/pages/Main");
-// import Page404 from '../page/public/404';
-// import MainPage from '../page/main/pages/Main';
 const store = StoreConfig.getStore();
 
 let baseRouteConfig = [
@@ -32,7 +30,7 @@ let rootRouteConfig = {
 let router;
 
 const getRouter = (routes) => {
-    const enableAuth = store.state.config.enableAuth;
+    const config = store.state.config;
     if (!router) {
         let routerConfig = [...baseRouteConfig];
 
@@ -66,7 +64,7 @@ const getRouter = (routes) => {
             console.info("======================== router - info ================");
             console.info(to);
             console.info(from);
-            if (enableAuth && to.meta.auth !== false) {
+            if (config.enableAuth && to.meta.auth !== false) {
                 let pageKey = to.meta.key;
                 let page = Vue.$menu.getPageByKey(pageKey);
                 let lastMatched = to.matched[to.matched.length - 1];
@@ -75,9 +73,11 @@ const getRouter = (routes) => {
                         if (lastMatched.regex.test(page.path)) {
                             next();//页面找到，并地址匹配，执行跳转
                         } else {
+                            //页面地址不匹配，跳转401
                             router.push({name: "Page401"});
                         }
                     } else {
+                        //页面对象未找到，跳转401
                         router.push({name: "Page401"});
                     }
                 } else {
@@ -86,11 +86,6 @@ const getRouter = (routes) => {
             } else {
                 next();
             }
-            // if (!to.matched || to.matched.length === 0) {
-            //     router.push({name: "main404"});
-            // } else {
-            //     next();
-            // }
         });
     }
     return router;

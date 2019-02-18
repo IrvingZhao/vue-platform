@@ -8,6 +8,10 @@ import App from './App';
 import './assets/style/index.scss';
 import './assets/style/iconfont.scss';
 
+import PlatformComponent from './component';
+
+import {Store, EditPage} from './base';
+
 let platformOption;
 
 export default {
@@ -24,7 +28,11 @@ export default {
         }
     },
     install(Vue, options) {
+        Vue.use(PlatformComponent);
         Vue.use(StoreConfig);
         platformOption = options;
     }
+}
+export {
+    Store, EditPage
 }

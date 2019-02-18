@@ -7,7 +7,7 @@
             </div>
             <el-menu class="aside-menu" v-mock-scroll="" :collapse="isCollapse"
                      :collapse-transition="false" @open="menuOpen" @close="menuClose" @select="menuSelect">
-                <menu-item :menu-data="item" v-for="(item,index) in menuList" :key="index"></menu-item>
+                <menu-item :menu-data="item" v-for="(item,index) in menuTreeList" :key="index"></menu-item>
             </el-menu>
         </el-aside>
         <el-container>
@@ -41,7 +41,7 @@
 </template>
 
 <script>
-
+    import {mapState} from 'vuex';
     import MenuItem from './MenuItem';
 
     export default {
@@ -67,9 +67,7 @@
             breadList() {
                 return this.$bread.getBread();
             },
-            menuList() {
-                return this.$menu.getMenu();
-            }
+            ...mapState("menu",["menuTreeList"]),
         },
         methods: {
             breadClick(item, index) {

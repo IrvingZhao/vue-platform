@@ -1,12 +1,14 @@
 {
   "name": "xlb-platform",
-  "version": "0.1.12",
+  "version": "0.1.19",
   "license": "MIT",
   "main": "./src/index.js",
   "repository": "git@git.gaogeche.cn:xlb/platform/front/xlb-platform.git",
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build"
+    "build": "vue-cli-service build",
+    "postinstall": "rimraf node_modules/.cache",
+    "clean": "rimraf node_modules/.cache"
   },
   "dependencies": {
     "element-ui": "^2.4.11",
@@ -14,8 +16,7 @@
     "vue-i18n": "^8.7.0",
     "vue-resource": "^1.5.1",
     "vue-router": "^3.0.1",
-    "vuex": "^3.1.0",
-    "xlb-plugin": "latest"
+    "vuex": "^3.1.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.3.0",
@@ -23,8 +24,10 @@
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "node-sass": "^4.9.0",
+    "rimraf": "^2.6.3",
     "sass-loader": "^7.0.1",
-    "vue-template-compiler": "^2.5.22"
+    "vue-template-compiler": "^2.5.22",
+    "xlb-plugin": "^0.1.10"
   },
   "publishConfig": {
     "registry": "http://mvn.gaogeche.cn/repository/xlb-npm-primary/"

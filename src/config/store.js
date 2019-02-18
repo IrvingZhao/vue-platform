@@ -8,23 +8,18 @@ import ConfigStore from './stores/configStore';
 
 Vue.use(Vuex);
 
-let stores = [
-    DicStore, BreadStore, MenuStore, ConfigStore
-];
-
 let store;
 
 const getStore = () => {
     if (!store) {
-        let storeModules = {};
-        stores.forEach((item) => {
-            if (item.store) {
-                storeModules[item.name] = item.store;
-            }
-        });
         store = new Vuex.Store({
             strict: process.env.NODE_ENV !== 'production',
-            modules: storeModules
+            modules: {
+                bread: BreadStore,
+                config: ConfigStore,
+                dic: DicStore,
+                menu: MenuStore
+            }
         });
     }
     return store;
@@ -33,12 +28,9 @@ const getStore = () => {
 export default {
     getStore,
     install(Vue) {
-        stores.forEach((item) => {
-            if (item.operator) {
-                let operator = item.operator(getStore());
-                Vue.prototype["$" + item.name] = operator;
-                Vue["$" + item.name] = operator;
-            }
-        });
+        Vue.prototype.$bread = BreadStore.operator(getStore());
+        Vue.prototype.$config = ConfigStore.operator(getStore());
+        Vue.prototype.$dic = DicStore.operator(getStore());
+        Vue.prototype.$menu = MenuStore.operator(getStore());
     }
 };

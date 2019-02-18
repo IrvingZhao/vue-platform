@@ -78,14 +78,19 @@ const operator = (store) => {
         reloadMenu() {
             store.dispatch("menu/loadMenu");
         },
-        getMenu() {
-            return store.state.menu.menuTreeList;
-        },
         getPageById(pageId) {
             return store.state.menu.pageMap[pageId];
         },
         getPageByKey(pageKey) {
             return store.state.menu.pageKeyMap[pageKey];
+        },
+        getPageOperatorByKey(pageKey) {
+            let page = this.getPageByKey(pageKey);
+            if (page) {
+                return page.operators;
+            } else {
+                return [];
+            }
         }
     }
 };

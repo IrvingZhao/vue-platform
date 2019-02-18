@@ -9,6 +9,7 @@ Vue.http.interceptors.push((request) => {
         if (response.status === 200) {
             const {code, msg} = response.body;
             if ("000000" !== code) {
+                //TODO 未登录检查
                 //TODO 弹出请求错误提示
             }
         }
