@@ -29,7 +29,7 @@ let operator = (store) => {
          * @return 当前对象
          * */
         set(breads) {
-            store.commit("bread/set", breads);
+            store.commit("base_bread/set", breads);
             return this;
         },
         /**
@@ -38,7 +38,7 @@ let operator = (store) => {
          * @return 当前对象
          * */
         push(breads) {
-            store.commit("bread/addBreadNav", breads);
+            store.commit("base_bread/addBreadNav", breads);
             return this;
         },
         /**
@@ -46,7 +46,7 @@ let operator = (store) => {
          * @return 当前对象
          * */
         clear() {
-            store.commit("bread/set", []);
+            store.commit("base_bread/set", []);
             return this;
         },
         /**
@@ -55,17 +55,17 @@ let operator = (store) => {
          * @return 当前对象
          * */
         splice(index) {
-            store.commit("bread/splice", index);
+            store.commit("base_bread/splice", index);
         },
         /**
          * 获取面包屑导航数据
          * @return 导航数据
          * */
         getBread() {
-            return store.state.bread.breadNav;
+            return store.state.base_bread.breadNav;
         }
     }
 };
 export default {
-    store, operator, name: "bread"
+    store, operator, name: "base_bread"
 }

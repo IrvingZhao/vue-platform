@@ -6,20 +6,23 @@ import BreadStore from './stores/breadStore';
 import MenuStore from './stores/menuStore';
 import ConfigStore from './stores/configStore';
 
+const StoreArray = [
+    BreadStore, ConfigStore, DicStore, MenuStore
+];
+
 Vue.use(Vuex);
 
 let store;
 
 const getStore = () => {
     if (!store) {
+        let modules = {};
+        StoreArray.forEach((item) => {
+            modules[item.name] = item.store;
+        });
         store = new Vuex.Store({
             strict: process.env.NODE_ENV !== 'production',
-            modules: {
-                bread: BreadStore,
-                config: ConfigStore,
-                dic: DicStore,
-                menu: MenuStore
-            }
+            modules: modules
         });
     }
     return store;

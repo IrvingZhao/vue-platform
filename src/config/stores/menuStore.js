@@ -71,18 +71,18 @@ const store = {
 };
 const operator = (store) => {
     //初始化加载
-    store.dispatch("menu/loadMenu");
-    store.dispatch("menu/loadAuth");
+    store.dispatch("base_menu/loadMenu");
+    store.dispatch("base_menu/loadAuth");
 
     return {
         reloadMenu() {
-            store.dispatch("menu/loadMenu");
+            store.dispatch("base_menu/loadMenu");
         },
         getPageById(pageId) {
-            return store.state.menu.pageMap[pageId];
+            return store.state.base_menu.pageMap[pageId];
         },
         getPageByKey(pageKey) {
-            return store.state.menu.pageKeyMap[pageKey];
+            return store.state.base_menu.pageKeyMap[pageKey];
         },
         getPageOperatorByKey(pageKey) {
             let page = this.getPageByKey(pageKey);
@@ -96,5 +96,5 @@ const operator = (store) => {
 };
 
 export default {
-    store, operator, name: "menu"
+    store, operator, name: "base_menu"
 }

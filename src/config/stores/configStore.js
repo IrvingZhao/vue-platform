@@ -12,11 +12,11 @@ let store = {
 let operator = (store) => {
     return {
         getEnableAuth() {
-            return store.state.config.enableAuth;
+            return store.state.base_config.enableAuth;
         }
     }
 };
 
 export default {
-    store, operator, name: "config"
+    store, operator, name: "base_config"
 }

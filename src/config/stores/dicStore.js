@@ -36,31 +36,31 @@ let operator = (store) => {
          * @param typeKey 字典类别key
          * */
         reloadDicItem(typeKey) {
-            store.dispatch("dic/loadDicItem", typeKey);
+            store.dispatch("base_dic/loadDicItem", typeKey);
         },
         /**
          * 获取指定key的字典项对象
          * @param typeKey 字典类别key
          * */
         getDicItemMap(typeKey) {
-            if (!store.state.dic[typeKey]) {
-                store.dispatch("dic/loadDicItem", typeKey);
+            if (!store.state.base_dic[typeKey]) {
+                store.dispatch("base_dic/loadDicItem", typeKey);
             }
-            return store.state.dic[typeKey + "_map"];
+            return store.state.base_dic[typeKey + "_map"];
         },
         /**
          * 获取指定key的字典项数组
          * @param typeKey 字典类别key
          * */
         getDicItemArray(typeKey) {
-            if (!store.state.dic[typeKey]) {
-                store.dispatch("dic/loadDicItem", typeKey);
+            if (!store.state.base_dic[typeKey]) {
+                store.dispatch("base_dic/loadDicItem", typeKey);
             }
-            return store.state.dic[typeKey + "_list"];
+            return store.state.base_dic[typeKey + "_list"];
         }
     }
 };
 
 export default {
-    store, operator, name: "dic"
+    store, operator, name: "base_dic"
 }
