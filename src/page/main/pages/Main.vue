@@ -67,7 +67,7 @@
             breadList() {
                 return this.$bread.getBread();
             },
-            ...mapState("menu",["menuTreeList"]),
+            ...mapState("base_menu", ["menuTreeList"]),
         },
         methods: {
             breadClick(item, index) {
