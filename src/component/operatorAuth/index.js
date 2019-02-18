@@ -13,7 +13,7 @@ export default {
         }
     },
     computed: {
-        ...mapState("config", ["enableAuth"]),
+        ...mapState("base_config", ["enableAuth"]),
     },
     render(_c) {
         let operators = this.$menu.getPageOperatorByKey(this.pageKey);

@@ -7,6 +7,7 @@ Vue.use(VueRouter);
 const Page404 = () => import(/* webpackChunkName: "error/404" */ '../page/public/404');
 const Page401 = () => import(/* webpackChunkName: "error/401" */ '../page/public/401');
 const MainPage = () => import(/* webpackChunkName: "base" */ "../page/main/pages/Main");
+const Login = () => import(/* webpackChunkName: 'login/pass'*/ "../page/login");
 const store = StoreConfig.getStore();
 
 let baseRouteConfig = [
@@ -14,6 +15,14 @@ let baseRouteConfig = [
         name: "Page404",
         path: "/404",
         component: Page404,
+        meta: {
+            auth: false
+        }
+    },
+    {
+        name: "Login",
+        path: "/login",
+        component: Login,
         meta: {
             auth: false
         }
@@ -30,7 +39,7 @@ let rootRouteConfig = {
 let router;
 
 const getRouter = (routes) => {
-    const config = store.state.config;
+    const config = store.state.base_config;
     if (!router) {
         let routerConfig = [...baseRouteConfig];
 
