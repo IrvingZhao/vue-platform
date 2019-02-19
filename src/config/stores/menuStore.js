@@ -68,8 +68,8 @@ const store = {
             });
         },
         initUserAuth(context) {
-            context.commit("loadMenu");
-            context.commit("loadAuth");
+            context.dispatch("loadMenu");
+            context.dispatch("loadAuth");
         }
     }
 };

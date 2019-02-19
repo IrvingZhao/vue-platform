@@ -1,9 +1,16 @@
 import Vue from 'vue';
 import VueResource from 'vue-resource';
+import StoreConfig from './store';
 
 Vue.use(VueResource);
 
+const store = StoreConfig.getStore();
+const UserInfo = store.state.base_user;
+
 Vue.http.interceptors.push((request) => {
+    if (UserInfo.token) {
+        request.headers.set("access_token", UserInfo.token);
+    }
     return (response) => {
         //TODO 添加 Token
         if (response.status === 200) {

@@ -6,6 +6,9 @@ const Api = {
     },
     login(loginParam) {
         return Vue.http.post("/api/login", loginParam);
+    },
+    sendMobileVerCode(mobile) {
+        return Vue.http.post("/api/base/mobileVerCode", {mobile});
     }
 };
 

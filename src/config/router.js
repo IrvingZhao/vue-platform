@@ -8,6 +8,7 @@ const Page404 = () => import(/* webpackChunkName: "error/404" */ '../page/public
 const Page401 = () => import(/* webpackChunkName: "error/401" */ '../page/public/401');
 const MainPage = () => import(/* webpackChunkName: "base" */ "../page/main/pages/Main");
 const Login = () => import(/* webpackChunkName: 'login/pass'*/ "../page/login");
+const ForgetPassValid = () => import(/* webpackChunkName:'login/reset' */ "../page/forgetPass");
 const store = StoreConfig.getStore();
 
 let baseRouteConfig = [
@@ -23,6 +24,14 @@ let baseRouteConfig = [
         name: "Login",
         path: "/login",
         component: Login,
+        meta: {
+            auth: false
+        }
+    },
+    {
+        name: "ForgetPass",
+        path: "/forget",
+        component: ForgetPassValid,
         meta: {
             auth: false
         }
@@ -47,7 +56,7 @@ const getRouter = (routes) => {
     if (token && userInfo) { //如果缓存中存在用户信息及token，刷新store中的数据
         store.commit("base_user/updateToken", token);
         store.commit("base_user/updateUserInfo", userInfo);
-        store.commit("base_menu/initUserAuth");//加载用户权限信息
+        store.dispatch("base_menu/initUserAuth");//加载用户权限信息
     }
     const stateUserInfo = store.state.base_user;
     if (!router) {
@@ -62,14 +71,14 @@ const getRouter = (routes) => {
             path: "*",
             component: Page404,
             meta: {
-                auth: false
+                auth: true
             }
         }, {
             name: "Page401",
             path: "/no-auth",
             component: Page401,
             meta: {
-                auth: false
+                auth: true
             }
         });
 
@@ -84,29 +93,34 @@ const getRouter = (routes) => {
             console.info(to);
             console.info(from);
             if (config.enableAuth) {
-                if (!stateUserInfo.token) {//跳转页面非 login  并且 store中不包含  token  跳转登录页
-                    if (to.name === "Login") {
-                        next();
-                    } else {
-                        next("/login")
-                    }
-                    return;
-                }
                 if (to.meta.auth !== false) {
+                    if (!stateUserInfo.token) {//跳转页面非 login  并且 store中不包含  token  跳转登录页
+                        if (to.name === "Login") {
+                            next();
+                        } else {
+                            next("/login")
+                        }
+                        return;
+                    }
+
                     let pageKey = to.meta.key;
-                    let page = Vue.$menu.getPageByKey(pageKey);
-                    let lastMatched = to.matched[to.matched.length - 1];
-                    if (lastMatched) {
-                        if (page) {
-                            if (lastMatched.regex.test(page.path)) {
-                                next();//页面找到，并地址匹配，执行跳转
+                    if (pageKey) {
+                        let page = Vue.$menu.getPageByKey(pageKey);
+                        let lastMatched = to.matched[to.matched.length - 1];
+                        if (lastMatched) {
+                            if (page) {
+                                if (lastMatched.regex.test(page.path)) {
+                                    next();//页面找到，并地址匹配，执行跳转
+                                } else {
+                                    //页面地址不匹配，跳转401
+                                    next("/no-auth");
+                                }
                             } else {
-                                //页面地址不匹配，跳转401
+                                //页面对象未找到，跳转401
                                 next("/no-auth");
                             }
                         } else {
-                            //页面对象未找到，跳转401
-                            next("/no-auth");
+                            next();
                         }
                     } else {
                         next();
