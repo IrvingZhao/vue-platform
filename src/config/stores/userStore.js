@@ -8,7 +8,13 @@ const Api = {
         return Vue.http.post("/api/login", loginParam);
     },
     sendMobileVerCode(mobile) {
-        return Vue.http.post("/api/base/mobileVerCode", {mobile});
+        return Vue.http.post("/api/base/mobileVerCode/send", {mobile});
+    },
+    checkMobileVerCode(params) {
+        return Vue.http.post("/api/base/mobileVerCode/check", params);
+    },
+    setPassByMobileCheck(params) {
+        return Vue.http.put("/api/base/pass/mobile", params);
     }
 };
 
