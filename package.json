@@ -27,7 +27,7 @@
     "rimraf": "^2.6.3",
     "sass-loader": "^7.0.1",
     "vue-template-compiler": "^2.5.22",
-    "xlb-plugin": "^0.1.11"
+    "xlb-plugin": "^1.0.0"
   },
   "publishConfig": {
     "registry": "http://mvn.gaogeche.cn/repository/xlb-npm-primary/"
