@@ -24,13 +24,13 @@
                 </div>
                 <div class="head-split"></div>
                 <div class="user-info">
-                    <div class="company-name">单位名称</div>
+                    <div class="company-name">{{userInfo.company}}</div>
                     <div class="user-icon">
-                        <img/>
+                        <img :src="userInfo.icon"/>
                     </div>
-                    <div class="real-name">用户名</div>
+                    <div class="real-name">{{userInfo.realname}}</div>
                     <div class="split"></div>
-                    <div class="exit">退出</div>
+                    <div class="exit" @click="logout">退出</div>
                 </div>
             </el-header>
             <el-main class="page-content-main">
@@ -68,6 +68,7 @@
                 return this.$bread.getBread();
             },
             ...mapState("base_menu", ["menuTreeList"]),
+            ...mapState("base_user", ["userInfo"])
         },
         methods: {
             breadClick(item, index) {
@@ -100,6 +101,11 @@
                     }, 400);
                 }
             },
+            logout() {
+                this.$store.dispatch("base_user/logout").then(() => {
+                    this.$router.push("/login");
+                });
+            }
         },
     }
 </script>

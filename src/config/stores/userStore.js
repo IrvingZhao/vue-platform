@@ -36,6 +36,11 @@ const store = {
         updateUserInfo(state, userInfo) {
             state.userInfo = userInfo;
             Vue.$util.setItem("user_info", userInfo);//设置缓存
+        },
+        clearAll(state) {
+            state.userInfo = {};
+            state.token = "";
+            Vue.$util.clearStorage();
         }
     },
     actions: {
@@ -43,6 +48,9 @@ const store = {
             context.commit("updateToken", token);
             context.commit("updateUserInfo", userInfo);
             context.dispatch("base_menu/initUserAuth", null, {root: true});
+        },
+        logout(context) {
+            context.commit("clearAll");
         }
     },
     getters: {
