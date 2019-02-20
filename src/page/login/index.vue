@@ -30,7 +30,7 @@
 </template>
 
 <script>
-    import {mapGetters, mapMutations} from 'vuex';
+    import {mapGetters, mapActions} from 'vuex';
 
     export default {
         name: "index",
@@ -63,13 +63,13 @@
                             const {code, data} = body;
                             if ("000000" === code) {
                                 //设置用户信息
-                                this.updateToken(data.token);
-                                this.updateUserInfo(data.userInfo);
-                                this.$store.dispatch("base_menu/initUserAuth");//加载用户权限信息
+                                this.updateUserInfo(data);
                                 if (data.redirect) {//如果返回带有重定向参数，执行重定向操作
                                     this.$router.push(data.redirect);
                                 } else if (this.prePath) {//如果登录页为 访问某个页面后跳转，则登录成功后，跳转相关页面
                                     this.$router.push(this.prePath);
+                                } else {
+                                    this.$router.push("/")
                                 }
                             }
                         })
@@ -84,7 +84,7 @@
                     }
                 })
             },
-            ...mapMutations("base_user", ["updateToken", "updateUserInfo"])
+            ...mapActions("base_user", ["updateUserInfo"]),
         }
     }
 </script>

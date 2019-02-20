@@ -40,7 +40,7 @@
 </template>
 
 <script>
-    import {mapGetters, mapMutations} from 'vuex';
+    import {mapGetters, mapActions} from 'vuex';
 
     const intervalFunc = (params) => {
         params.time = 60;
@@ -178,12 +178,14 @@
                                     message: "密码修改成功"
                                 });
                                 //设置用户信息
-                                this.updateToken(data.token);
-                                this.updateUserInfo(data.userInfo);
-                                //加载用户权限
-                                this.$store.dispatch("base_menu/loadMenu");
-
-                                this.$router.push("/")
+                                this.updateUserInfo(data);
+                                if (data.redirect) {//如果返回带有重定向参数，执行重定向操作
+                                    this.$router.push(data.redirect);
+                                } else if (this.prePath) {//如果登录页为 访问某个页面后跳转，则登录成功后，跳转相关页面
+                                    this.$router.push(this.prePath);
+                                }else{
+                                    this.$router.push("/")
+                                }
                             } else if ("010200" === code) {
                                 //手机验证码验证失败
                                 this.formStatus = "valid";
@@ -192,7 +194,7 @@
                     }
                 });
             },
-            ...mapMutations("base_user", ["updateToken", "updateUserInfo"])
+            ...mapActions("base_user", ["updateUserInfo"])
         }
     }
 </script>
