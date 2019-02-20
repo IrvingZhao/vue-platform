@@ -6,7 +6,7 @@ import Platform from "../src/index";
 
 Vue.use(ElementUI);
 Vue.use(Plugin);
-Vue.use(Platform);
+Vue.use(Platform, {enableAuth: true});
 
 let vueConfig = Platform.getVueConfig([]);
 
