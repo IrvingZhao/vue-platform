@@ -7,6 +7,11 @@ let store = {
         setEnableAuth(state, enableAuth) {
             state.enableAuth = enableAuth;
         }
+    },
+    getters:{
+        enableAuth(state){
+            return state.enableAuth;
+        }
     }
 };
 let operator = (store) => {

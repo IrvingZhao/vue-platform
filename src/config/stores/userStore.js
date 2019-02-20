@@ -22,9 +22,13 @@ const store = {
     namespaced: true,
     state: {
         userInfo: {},
-        token: ""
+        token: "",
+        prePath: "",
     },
     mutations: {
+        setPrePath(state, prePath) {
+            state.prePath = prePath;
+        },
         updateToken(state, token) {
             state.token = token;
             Vue.$util.setItem("user_token", token);//设置缓存
@@ -34,10 +38,22 @@ const store = {
             Vue.$util.setItem("user_info", userInfo);//设置缓存
         }
     },
-    actions: {},
+    actions: {
+        updateUserInfo(context, {token, userInfo}) {
+            context.commit("updateToken", token);
+            context.commit("updateUserInfo", userInfo);
+            context.dispatch("base_menu/initUserAuth", null, {root: true});
+        }
+    },
     getters: {
         api() {
             return Api;
+        },
+        prePath(state) {
+            return state.prePath;
+        },
+        token(state) {
+            return state.token;
         }
     }
 };

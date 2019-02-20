@@ -35,7 +35,7 @@
     export default {
         name: "index",
         computed: {
-            ...mapGetters("base_user", ["api"])
+            ...mapGetters("base_user", ["api", "prePath"])
         },
         data() {
             return {
@@ -68,6 +68,8 @@
                                 this.$store.dispatch("base_menu/initUserAuth");//加载用户权限信息
                                 if (data.redirect) {//如果返回带有重定向参数，执行重定向操作
                                     this.$router.push(data.redirect);
+                                } else if (this.prePath) {//如果登录页为 访问某个页面后跳转，则登录成功后，跳转相关页面
+                                    this.$router.push(this.prePath);
                                 }
                             }
                         })
