@@ -11,7 +11,7 @@ const Login = () => import(/* webpackChunkName: 'login/pass'*/ "../page/login");
 const ForgetPassValid = () => import(/* webpackChunkName:'login/reset' */ "../page/forgetPass");
 const store = StoreConfig.getStore();
 
-let baseRouteConfig = [
+const baseRouteConfig = [
     {
         name: "Page404",
         path: "/404",
@@ -38,29 +38,31 @@ let baseRouteConfig = [
     }
 ];
 
-let rootRouteConfig = {
+const rootRouteConfig = {
     name: "root",
     path: "/",
     component: MainPage,
-    children: [
-        {
-            name: "Page401",
-            path: "/no-auth",
-            component: Page401,
-            meta: {
-                auth: true
-            }
-        },
-        {
-            name: "main404",
-            path: "*",
-            component: Page404,
-            meta: {
-                auth: true
-            }
-        }
-    ]
+    children: []
 };
+
+const rootRouterBaseChild = [
+    {
+        name: "Page401",
+        path: "/no-auth",
+        component: Page401,
+        meta: {
+            auth: true
+        }
+    },
+    {
+        name: "main404",
+        path: "*",
+        component: Page404,
+        meta: {
+            auth: true
+        }
+    }
+];
 
 let router;
 
@@ -69,6 +71,10 @@ function initRouter(routes) {
 
     routes.forEach((item) => {
         rootRouteConfig.children.push(item);
+    });
+
+    rootRouterBaseChild.forEach((item) => {
+        routerConfig.children.push(item);
     });
 
     routerConfig.push(rootRouteConfig);
