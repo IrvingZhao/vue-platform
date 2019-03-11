@@ -74,7 +74,7 @@ function initRouter(routes) {
     });
 
     rootRouterBaseChild.forEach((item) => {
-        routerConfig.children.push(item);
+        rootRouteConfig.children.push(item);
     });
 
     routerConfig.push(rootRouteConfig);

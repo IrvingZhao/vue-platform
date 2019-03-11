@@ -43,6 +43,7 @@
                 form: {
                     username: "",
                     password: "",
+                    verCodeKey: "",
                     vercode: ""
                 },
                 formRules: {
@@ -80,7 +81,8 @@
                 this.api.getVerCodeImg().then(({body}) => {
                     const {code, data} = body;
                     if ("000000" === code) {
-                        this.verCodeData = data;
+                        this.form.verCodeKey = data.key;
+                        this.verCodeData = data.img;
                     }
                 })
             },
