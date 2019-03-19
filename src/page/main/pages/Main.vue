@@ -24,11 +24,11 @@
                 </div>
                 <div class="head-split"></div>
                 <div class="user-info">
-                    <div class="company-name">{{userInfo.company}}</div>
+                    <div class="company-name">公司名称</div>
                     <div class="user-icon">
-                        <img :src="userInfo.icon"/>
+                        <img src=""/>
                     </div>
-                    <div class="real-name">{{userInfo.realname}}</div>
+                    <div class="real-name">真实姓名</div>
                     <div class="split"></div>
                     <div class="exit" @click="logout">退出</div>
                 </div>
@@ -54,6 +54,7 @@
             }
         },
         created() {
+            console.info("======== main created =================")
             this.$bread.set([
                 {
                     name: "首页"
